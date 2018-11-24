@@ -1,0 +1,160 @@
+﻿<div class="row" (click)="cityClosed();stateClosed();">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="userForm" novalidate (ngSubmit)="SaveUser(userForm.value)">
+                    <div class="form-group">
+                        <label for="name">First Name</label>
+                        <input type="text" class="form-control"
+                               title="First Name" placeholder="First Name" formControlName="FirstName" id="UserFirstName" required>
+                        <small *ngIf="!userForm.controls.FirstName.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alterEgo">Last Name</label>
+                        <input type="text" class="form-control" formControlName="LastName"
+                               title="Last Name" placeholder="Last Name" id="UserLastName">
+                        <small *ngIf="!userForm.controls.LastName.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alterEgo">Email</label>
+                        <input type="text" class="form-control" formControlName="Email" readonly="readonly"
+                               title="Email" placeholder="Email" id="UserEmail">
+                        <small *ngIf="!userForm.controls.Email.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="alterEgo">Title</label>
+                        <input type="text" class="form-control" formControlName="Title"
+                               title="Title" placeholder="Title" id="UserTitle">
+                        <small *ngIf="!userForm.controls.Title.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alterEgo">Institution</label>
+                        <input type="text" class="form-control" formControlName="Institution"
+                               title="Institution" placeholder="Institution" id="UserInstitution">
+                        <small *ngIf="!userForm.controls.Institution.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alterEgo">Cell Phone</label>
+                        <input type="text" class="form-control" formControlName="CellPhone"
+                               title="Cell Phone" placeholder="Cell Phone" id="UserCellPhone">
+                        <small *ngIf="!userForm.controls.CellPhone.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alterEgo">OfficePhone</label>
+                        <input type="text" class="form-control" formControlName="OfficePhone"
+                               title="Office Phone" placeholder="Office Phone" id="UserOfficePhone">
+                        <small *ngIf="!userForm.controls.OfficePhone.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="alterEgo">Street</label>
+                        <input type="text" class="form-control" formControlName="Street"
+                               title="Street" placeholder="Street" id="UserStreet">
+                        <small *ngIf="!userForm.controls.Street.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alterEgo">City</label>
+
+                        <mat-form-field class="form-control">
+                            <input matInput id="cityTextBox" (keydown.Tab)="cityClosed()" (input)="getCityMatchText('');"
+                                   [matAutocomplete]="auto" formControlName='City'>
+                        </mat-form-field>
+                        <mat-autocomplete (closed)="cityClosed()" (opened)="cityOpened()"
+                                            autoActiveFirstOption       #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+                            <ng-container *ngIf="!isLoading">
+                                <mat-option *ngFor="let city of cityList" [value]="city">
+                                    <span>{{ city.Name }}</span>
+                                </mat-option>
+                            </ng-container>
+                        </mat-autocomplete>
+
+                        <!--<select formControlName="City" class="form-control">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let city of appCommon.GetCityList() "
+                                    value={{city.Uri}}>
+                                {{city.Name}}
+                            </option>
+                        </select>-->
+                        <small *ngIf="!userForm.controls.City.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alterEgo">State</label>
+                        <mat-form-field class="form-control">
+                            <input matInput id="stateTextBox" (keydown.Tab)="stateClosed()"  (input)="getStateMatchText('');"
+                                   [matAutocomplete]="autoState" formControlName='State'>
+                        </mat-form-field>
+                        <mat-autocomplete (closed)="stateClosed()" (opened)="stateOpened()"
+                                     autoActiveFirstOption     #autoState="matAutocomplete" [displayWith]="displayFnState">
+                            <mat-option *ngIf="isStateLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+                            <ng-container *ngIf="!isStateLoading">
+                                <mat-option *ngFor="let stateOption of stateList" [value]="stateOption">
+                                    <span>{{stateOption.Abbrev }} - {{stateOption.Name }}</span>
+                                </mat-option>
+                            </ng-container>
+                        </mat-autocomplete>
+                        <!--<select formControlName="State" class="form-control">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let state of appCommon.GetStateList() "
+                                    value={{state.Uri}}>
+                                {{state.Name}}
+                            </option>
+                        </select>-->
+                        <small *ngIf="!userForm.controls.State.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alterEgo">Zip</label>
+                        <input type="text" class="form-control" formControlName="Zip"
+                               title="Zip" placeholder="201002" id="UserZip">
+                        <small *ngIf="!userForm.controls.Zip.valid" class="text-danger">
+                            This field is required.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Permissions</label>&nbsp;
+                        <ss-multiselect-dropdown [options]="permissionList"
+                                                 [texts]="appCommon.MultiSelectDropDownTexts"
+                                                 [settings]="appCommon.MultiSelectDropDownSettings"
+                                                 formControlName="Permission">
+
+                        </ss-multiselect-dropdown>
+                        <!--<div *ngIf="!userForm.controls.Permission.valid && !userForm.controls.Permission.pristine" class="alert alert-danger">
+                            This field is required.
+                        </div>-->
+
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid">Submit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
